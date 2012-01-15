@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Agile tracker</title>
+    <link href="main.css" rel="stylesheet"/>
+    <link href="ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet">
+    <script src="jquery.js" type="text/javascript"></script>
+    <script src="jquery-tmpl.js" type="text/javascript"></script>
+    <script src="agile.js" type="text/javascript"></script>
+    <script type="text/javascript" src="jquery-ui-1.8.16.custom.min.js"></script>
+    <script id="taskTmpl" type="text/x-jquery-tmpl">
+        <li{{if rejected}} class="rejected"{{/if}}>
+            <hgroup>
+                <input type="number" class="points_value" value="${points_value}" min="0" max="10"/>
+                <label>${task_name}</label>
+                {{if points_value}}
+                    {{if not_started}}
+                        <input type="button" class="start_button" value="Start"/>
+                    {{else started}}
+                        <input type="button" class="stop_button" value="Stop"/>
+                    {{else finished}}
+                        <input type="button" class="deliver_button" value="Deliver"/>
+                    {{else delivered}}
+                        <input type="button" class="accept_button" value="Accept"/>
+                        <input type="button" class="reject_button" value="Reject"/>
+                    {{else rejected}}
+                        <input type="button" class="restart_button" value="Restart"/>
+                    {{/if}}
+                {{/if}}
+            </hgroup>
+            <div class="description">
+                <label>Description:</label>
+                <textarea>${task_description}</textarea>
+            </div>
+        </li>
+    </script>
+
+</head>
+<body>
+<header>Agile project tracker.</header>
+<nav>
+
+</nav>
+<section id="done">
+    <label class="section_header">Done</label>
+    <ol>
+        <li>1</li>
+        <li>2</li>
+    </ol>
+</section>
+<section id="current">
+    <label class="section_header">Current</label>
+    <ol>
+    </ol>
+</section>
+<section id="backlog">
+    <label class="section_header">Backlog</label>
+    <ol>
+    </ol>
+</section>
+<section id="icebox">
+    <label class="section_header">Icebox</label>
+    <ol>
+    </ol>
+</section>
+<footer>2011 &copy;</footer>
+<div id="log">
+
+</div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+
+<% if (!everyauth.loggedIn) { %>
+
+	<%- partial('about.html') %>  
+
+<% } else { %>
+
+		<div class="clearfix" style="margin-bottom: 5px;">
+            <label for="xlInput" id="newElementLabel">New Shop List:</label>
+            <div class="input">&nbsp;&nbsp;
+              <input class="xlarge" id="xlInput" name="xlInput" size="30" type="text" />
+              <a href="#" id="addShopListButton" class="btn primary" data-loading-text="creating...">Add</a>
+            </div>
+        </div>
+        <div class="row show-grid">
+		    <div class="span9"><div id="lists"></div></div>
+    		<div class="span5" id="coOwnersDiv" style="display: none;"><textarea id="coOwners"></textarea></div>
+  </div>
+        
+
+<% } %>
