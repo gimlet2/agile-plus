@@ -103,7 +103,7 @@ everyone.now.addShopList = function(name) {
 		});	
 }
 
-everyone.now.deleteShopList = function(name) {
+everyone.now.deleteProject = function(name) {
 		var a = this.now;
 		var connectId = unescape(this.user.cookie['connect.sid']);
 		var clientId = this.user.clientId;
@@ -115,7 +115,7 @@ everyone.now.deleteShopList = function(name) {
 			    group.addUser(clientId);
 		    }
 		});
-		routes.deleteShopList(res.auth, name, group.now);
+		routes.deleteProject(res.auth, name, group.now);
 		});	
 }
 
@@ -134,7 +134,7 @@ everyone.now.getShopLists = function() {
 		});	
 }
 
-everyone.now.getShopList = function(id) {
+everyone.now.getProject = function(id) {
 		var connectId = unescape(this.user.cookie['connect.sid']);
 		var clientId = this.user.clientId;
 		sessionStore.load(connectId, function(err, res) {
@@ -144,7 +144,7 @@ everyone.now.getShopList = function(id) {
 			    	group.addUser(clientId);
 		    	}
 			});
-			routes.getShopList(res.auth, group.now, id);
+			routes.getProject(res.auth, group.now, id);
 		});	
 }
 
