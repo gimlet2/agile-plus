@@ -1,0 +1,89 @@
+body {
+    font-family: sans-serif;
+}
+
+section {
+    float: left;
+    display: block;
+    min-width: 300px;
+    height: 550px;
+    margin-left: 3px;
+    border: solid #333 1px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+footer {
+    clear: both;
+}
+
+section label.section_header {
+    display: block;
+    background-color: #333;
+    color: #eee;
+}
+
+ol {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+li {
+    display: block;
+    width: 290px;
+    min-height: 30px;
+    margin: 1px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+li hgroup {
+    height: 30px;
+}
+
+section#done li {
+    background-color: #99ee99;
+}
+
+section#current li {
+    background-color: #dddd55;
+}
+
+section#current li.rejected {
+    background-color: #dd4444;
+}
+
+section#backlog li {
+    background-color: #eeeeee;
+}
+
+section#icebox li {
+    background-color: #8888dd;
+}
+
+li input {
+    float: right;
+
+}
+
+li input.points_value {
+    width: 35px;
+    float: left;
+    text-align: center;
+}
+
+div.description {
+    width: 100%;
+    display: none;
+}
+
+div.description textarea {
+    display: block;
+    margin: 4px;
+}
