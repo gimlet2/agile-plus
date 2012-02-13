@@ -1,21 +1,30 @@
 
-<% if (!everyauth.loggedIn) { %>
+<% if (everyauth.loggedIn) { %>
 
-	<%- partial('about.html') %>  
+
 
 <% } else { %>
 
-		<div class="clearfix" style="margin-bottom: 5px;">
-            <label for="xlInput" id="newElementLabel">New Shop List:</label>
-            <div class="input">&nbsp;&nbsp;
-              <input class="xlarge" id="xlInput" name="xlInput" size="30" type="text" />
-              <a href="#" id="addShopListButton" class="btn primary" data-loading-text="creating...">Add</a>
-            </div>
-        </div>
-        <div class="row show-grid">
-		    <div class="span9"><div id="lists"></div></div>
-    		<div class="span5" id="coOwnersDiv" style="display: none;"><textarea id="coOwners"></textarea></div>
-  </div>
+<section id="done">
+    <label class="section_header">Done</label>
+    <ol>
+    </ol>
+</section>
+<section id="current">
+    <label class="section_header">Current</label>
+    <ol>
+    </ol>
+</section>
+<section id="backlog">
+    <label class="section_header">Backlog</label>
+    <ol>
+    </ol>
+</section>
+<section id="icebox">
+    <label class="section_header">Icebox     <a href="#" id="addNewItem" onclick="addNewItem(event);">+</a></label>
+    <ol>
+    </ol>
+</section>
         
 
 <% } %>

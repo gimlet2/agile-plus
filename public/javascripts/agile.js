@@ -65,13 +65,43 @@ var current_tasks = [
     }
 ];
 
+var emptyTask = {
+        id: null,
+        task_name: '',
+        task_description: '',
+        not_started: 1
+
+    }
+
+//start here
+
+var icebox = 'section#icebox > ol';
+var backlog = 'section#backlog > ol';
+var current = 'section#current > ol';
+
+var ejs = require('ejs');
+ejs.open = '{{';
+ejs.close = '}}';
+
+addNewItem = function(e) {
+	var items = document.getElementById('taskTmpl').innerHTML;
+	html = ejs.render(items, { item: emptyTask });
+	$(icebox).prepend(html);
+	$($(icebox).children()[0]).click(function() {
+            $(this).parent().children('div.description').toggle("slow");
+        });
+	e.preventDefault();
+	return false;
+}
+
+
 $(document).ready(function() {
-    $('#taskTmpl').tmpl(backlog_tasks).appendTo('section#backlog > ol');
-    $('#taskTmpl').tmpl(icebox_tasks).appendTo('section#icebox > ol');
-    $('#taskTmpl').tmpl(current_tasks).appendTo('section#current > ol');
-    $('section#current > ol').sortable({ connectWith: 'section#backlog > ol, section#icebox > ol' });
-    $('section#backlog > ol').sortable({ connectWith: 'section#current > ol, section#icebox > ol' });
-    $('section#icebox > ol').sortable({ connectWith: 'section#backlog > ol', update: function(event, ui) {
+	$('#taskTmpl').tmpl(backlog_tasks).appendTo(backlog);
+    $('#taskTmpl').tmpl(icebox_tasks).appendTo(icebox);
+    $('#taskTmpl').tmpl(current_tasks).appendTo(current);
+    $(current).sortable({ connectWith: backlog + ', '+ icebox });
+    $(backlog).sortable({ connectWith: current + ', '+ icebox });
+    $(icebox).sortable({ connectWith: backlog, update: function(event, ui) {
 
         alert($(ui.item).html());
     } });

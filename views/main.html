@@ -1,176 +1,55 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-	<title>Smart Consuming - <%= title %></title>
-
-
-	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css"  type="text/css">
-	<link href="/stylesheets/style.css"  rel="stylesheet" type="text/css"/>
-	<link href="/stylesheets/jquerytagsinput.css"  rel="stylesheet" type="text/css"/>
-    <script src="/nowjs/now.js" type="text/javascript"></script>
-	<script src="/javascripts/jquery.min.js" type="text/javascript"></script>
-	<script src="/javascripts/bootstrap-buttons.js" type="text/javascript"></script>
-	<script src="/javascripts/jquerytagsinput.js" type="text/javascript"></script>
-
-    <script src="/javascripts/ejs.min.js"></script>
-    <script id="shopList" type="text/template">
-      {{ if (shopLists != null && shopLists.length) { }}
-		<table class="bordered-table" style="width: 500px;">
-
-          {{ shopLists.forEach(function(shopList){ }}
-			<tr>	
-				<td>{{= shopList.name }}</td>
-            	<td style="width: 160px; text-align: center;">
-            	<a href="#" class="btn primary" data-loading-text="shopping!" onclick="goShopWithList(this, '{{= shopList._id }}', '{{= shopList.name }}');">Go shop</a>
-		        <a href="#" class="btn" data-loading-text="deleting..." onclick="deleteList(this, '{{= shopList._id }}');">Delete</a>
-            	</td>
-            </li>
-          {{ }) }}
-	</table>
-      {{ } }}
+    <meta charset="UTF-8">
+    <title>Agile tracker</title>
+    <link href="/stylesheets/main.css" rel="stylesheet"/>
+    <link href="/javascripts/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet">
+    <script src="/javascripts/jquery.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery-tmpl.js" type="text/javascript"></script>
+    <script src="/javascripts/ejs.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/javascripts/jquery-ui-1.8.16.custom.min.js"></script>
+    <script src="/javascripts/agile.js" type="text/javascript"></script>
+    <script id="taskTmpl" type="text/template">
+        <li {{ if (item.rejected) { }} class="rejected"{{ } }}>
+            <hgroup>
+                <input type="number" class="points_value" value="{{= item.points_value}}" min="0" max="10"/>
+                <label>{{= item.task_name}}</label>
+                <input type="button" class="save_button" value="Save"/>
+                {{ if(item.points_value) { }}
+                    {{ if(item.not_started) { }}
+                        <input type="button" class="start_button" value="Start"/>
+                    {{ } else if(item.started) { }}
+                        <input type="button" class="stop_button" value="Stop"/>
+                    {{ } else if(item.finished) { }}
+                        <input type="button" class="deliver_button" value="Deliver"/>
+                    {{ } else if(item.delivered) { }}
+                        <input type="button" class="accept_button" value="Accept"/>
+                        <input type="button" class="reject_button" value="Reject"/>
+                    {{ } else if(item.rejected) { }}
+                        <input type="button" class="restart_button" value="Restart"/>
+                    {{ } }}
+                {{ } }}
+            </hgroup>
+            <div class="description">
+                <label>Description:</label>
+                <textarea>{{= item.task_description }}</textarea>
+            </div>
+        </li>
     </script>
 
-    <script id="itemList" type="text/template">
-      {{ if (itemLists != null && itemLists.length) { }}
-		<table class="bordered-table" style="width: 500px;">
-
-          {{ itemLists.forEach(function(itemList){ }}
-			<tr>	
-				<td style="{{ if(itemList.isBought) { }} background-color: #A9DBA9; {{ } }}">{{= itemList.name }}</td>
-            	<td style="width: 160px; text-align: center;">
-            	
-            	<a href="#" class="btn primary {{ if(itemList.isBought) { }} disabled {{ } }}" data-loading-text="buing!" onclick="buyItem(this, '{{= listId }}', '{{= itemList._id }}');">Buy</a>
-            	
-		        <a href="#" class="btn" data-loading-text="deleting..." onclick="deleteItem(this, '{{= listId }}', '{{= itemList._id }}');">Delete</a>
-            	</td>
-            </li>
-          {{ }) }}
-	</table>
-      {{ } }}
-    </script>
-
-	<script type="text/javascript">
-			var ejs = require('ejs');
-			ejs.open = '{{';
-			ejs.close = '}}';	
-		var shopListId;
-		var initDone = false;
-		
-		
-		function addShopList() {
-		
-			$('#addShopListButton').button('loading');
-			now.addShopList($('#xlInput').val());
-			$('#addShopListButton').button('reset');
-			$('#xlInput').val("");
-		}
-
-		function addItemList(id) {
-			$('#addShopListButton').button('loading');
-			now.addItem(id, $("#xlInput").val());
-			$('#addShopListButton').button('reset');
-			$('#xlInput').val("");
-		}
-
-		
-		now.displayPollData = function(list) {
-			var shop = document.getElementById('shopList').innerHTML;
-			var html = ejs.render(shop, { shopLists: list });
-			$("#lists").html(html);
-		}
-		
-		now.displayPollItemsData = function(list) {
-			var items = document.getElementById('itemList').innerHTML;
-			var html = ejs.render(items, { itemLists: list.items, listId: list._id });
-			$("#lists").html(html);
-			$("#coOwners").importTags('');
-			$(list.coOwners).each(function(n, e) {
-				$("#coOwners").addTag(e,{callback:false});			
-			});
-
-		}
-		
-		function deleteList(button, id) {
-			$(button).button('loading');
-			now.deleteShopList(id);
-			$(button).button('reset');
-		}
-		
-		function deleteItem(button, listId, id) {
-			$(button).button('loading');
-			now.deleteItem(listId, id);
-			$(button).button('reset');
-		}
-		
-		function buyItem(button, listId, id) {
-			$(this).button('loading');
-			now.buyItem(listId, id);
-			$(this).button('reset');
-		}
-		
-		function goShopWithList(button, id, name) {
-			shopListId = id;
-			$(button).button('loading');
-			$("#shopListNameDiv").html("<h2>" + name + "</h2");
-			$("#newElementLabel").html("New item:");
-			$("#coOwnersDiv").show();
-			$("#addShopListButton").unbind('click');
-			$("#addShopListButton").click(function() {
-				addItemList(id);
-			});
-			now.getShopList(id);
-			$(button).button('reset');		
-			document.url = document.url + "#" + id;
-		}
-		
-		now.ready(function() {
-			<% if (!everyauth.loggedIn) { %>
-				
-			<% } else { %>
-				now.getShopLists();
-				if(!initDone) {
-					initDone = true;
-			     	$("#addShopListButton").click(addShopList);
-				    $("#coOwners").tagsInput({onAddTag:onAddTag,onRemoveTag:onRemoveTag, defaultText: "add user"});
-				 }
-				 
-			<% } %>	
-			});
-			
-		function onAddTag(tag) {
-			if (!$('#coOwners').tagExist(tag)) {
-				now.addCoOwner(shopListId, tag);
-			}
-		}
-		function onRemoveTag(tag) {
-			now.deleteCoOwner(shopListId, tag);
-		}
-	
-	</script>
 </head>
 <body>
-<div class="topbar" data-scrollspy="scrollspy" >
-      <div class="topbar-inner">
-        <div class="container">
-          <a class="brand" href="/">Smart Consuming</a>
-          <ul class="nav">
-			<li><a href="/about">About</a></li>
-<% if (!everyauth.loggedIn) { %>
-			<li><a href="/auth/google">Login with Google</a></li>
+<header>Agile project tracker.</header>
+<nav>
 
-<% } else { %>
+</nav>
 
-			<li><a href="#"><%= everyauth.google.user.id %></a></li>
-				<li><a href="/logout">logout</a></li>
-			<% } %>
-          </ul>
-        </div>
-      </div>
-    </div>
-<div class="container">
-	<div id="shopListNameDiv">
-	</div>
     	<%- body %>
+
+<footer>2011 &copy;</footer>
+<div id="log">
+
 </div>
 </body>
 </html>

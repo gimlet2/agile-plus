@@ -74,7 +74,7 @@ app.configure(function(){
 // DB
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/consuming');
+mongoose.connect('mongodb://localhost/agile');
 
 // Configuration
 app.configure('development', function(){
